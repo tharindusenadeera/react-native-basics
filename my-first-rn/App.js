@@ -26,6 +26,12 @@ export default function App() {
     ]);
   };
 
+  const handleRemove = goalId => {
+    setCourseGoals(currentGoals => {
+      return currentGoals.filter(goals => goals.id !== goalId);
+    });
+  };
+
   return (
     <View style={styles.screen}>
       <View style={styles.inputContainer}>
@@ -35,18 +41,17 @@ export default function App() {
           onChangeText={handleText}
           value={enteredGoal}
         />
-        {/* <TextInput
-          placeholder="Course Goal"
-          style={styles.input}
-          onChangeText={handleText}
-          value={enteredGoal}
-        /> */}
         <Button title="Add" onPress={handleAdd} />
       </View>
       <FlatList
         keyExtractor={(item, index) => item.id}
         data={courseGoals}
-        renderItem={itemData => <GoalItem value={itemData.item.value} />}
+        renderItem={itemData => (
+          <GoalItem
+            value={itemData.item.value}
+            onDelete={() => handleRemove(itemData.item.id)}
+          />
+        )}
       />
     </View>
   );
